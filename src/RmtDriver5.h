@@ -10,9 +10,10 @@
 
 #include "Color.h"
 
-#if !defined(CONFIG_RMT_ISR_IRAM_SAFE) && !defined(SMARTLEDS_DISABLE_IRAM_WARNING)
-#warning "Please enable CONFIG_RMT_ISR_IRAM_SAFE IDF option." \
-    "without it, the IDF driver is not able to supply data fast enough."
+#if !defined(CONFIG_RMT_ISR_IRAM_SAFE) && !defined(CONFIG_RMT_TX_ISR_CACHE_SAFE) \
+    && !defined(SMARTLEDS_DISABLE_IRAM_WARNING)
+#warning "Please enable CONFIG_RMT_TX_ISR_CACHE_SAFE (CONFIG_RMT_ISR_IRAM_SAFE on ESP-IDF before 5.5) " \
+    "to keep RMT transmissions working while the flash cache is disabled."
 #endif
 
 namespace SmartLeds::detail {

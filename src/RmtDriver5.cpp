@@ -122,7 +122,7 @@ esp_err_t RmtDriver::init() {
 esp_err_t RmtDriver::registerIsr(bool isFirstRegisteredChannel) {
     rmt_tx_channel_config_t conf = {
         .gpio_num = (gpio_num_t)_pin,
-        .clk_src = RMT_CLK_SRC_APB,
+        .clk_src = RMT_CLK_SRC_DEFAULT,
         .resolution_hz = RMT_RESOLUTION_HZ,
         .mem_block_symbols = SOC_RMT_MEM_WORDS_PER_CHANNEL,
         .trans_queue_depth = 1,

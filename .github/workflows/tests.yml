@@ -17,6 +17,7 @@ jobs:
           - esp32s3-idf5-idf.ini
           - esp32c3-idf4-arduino.ini
           - esp32c3-idf5-idf.ini
+          - esp32c6-idf5-idf.ini
     steps:
       - uses: actions/checkout@v3
       - name: Set up Python
