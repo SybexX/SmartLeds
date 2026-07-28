@@ -2,7 +2,17 @@
 
 Simple & intuitive way to drive various smart LEDs on ESP32.
 
-Requires ESP-IDF >=4.0
+Requires ESP-IDF >=4.0 and C++17.
+
+## PlatformIO configuration
+
+PlatformIO projects must enable C++17 in `platformio.ini`:
+
+```ini
+build_unflags = -std=gnu++11
+build_flags =
+    -std=gnu++17
+```
 
 ## Supported LEDs:
 
