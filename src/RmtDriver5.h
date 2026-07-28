@@ -15,7 +15,7 @@
     "without it, the IDF driver is not able to supply data fast enough."
 #endif
 
-namespace detail {
+namespace SmartLeds::detail {
 
 constexpr const int CHANNEL_COUNT = SOC_RMT_GROUPS * SOC_RMT_CHANNELS_PER_GROUP;
 
@@ -61,5 +61,5 @@ private:
     RmtEncoderWrapper _encoder;
 };
 
-};
+} // namespace SmartLeds::detail
 #endif // !SMARTLEDS_NEW_RMT_DRIVER

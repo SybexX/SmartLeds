@@ -43,7 +43,7 @@
 
 #include "RmtDriver.h"
 
-using LedType = detail::TimingParams;
+using LedType = SmartLeds::detail::TimingParams;
 
 // Times are in nanoseconds,
 // The RMT driver runs at 20MHz, so minimal representable time is 50 nanoseconds
@@ -63,7 +63,7 @@ enum BufferType { SingleBuffer = 0, DoubleBuffer };
 enum IsrCore { CoreFirst = 0, CoreSecond = 1, CoreCurrent = 2 };
 
 struct RmtDriverDeleter {
-    void operator()(detail::RmtDriver* ptr) const {
+    void operator()(SmartLeds::detail::RmtDriver* ptr) const {
         if (ptr) {
             std::destroy_at(ptr);
             heap_caps_free(ptr);
@@ -91,7 +91,7 @@ struct RgbDeleter {
 
 class SmartLed {
 public:
-    friend class detail::RmtDriver;
+    friend class SmartLeds::detail::RmtDriver;
 
     // The RMT interrupt must not run on the same core as WiFi interrupts, otherwise SmartLeds
     // can't fill the RMT buffer fast enough, resulting in rendering artifacts.
@@ -106,16 +106,16 @@ public:
         : _finishedFlag(xSemaphoreCreateBinary())
         , _channel(channel)
         , _count(count) {
-        assert(channel >= 0 && channel < detail::CHANNEL_COUNT);
+        assert(channel >= 0 && channel < SmartLeds::detail::CHANNEL_COUNT);
         assert(ledForChannel(channel) == nullptr);
 
         xSemaphoreGive(_finishedFlag);
 
-        auto mem = heap_caps_malloc(sizeof(detail::RmtDriver), MALLOC_CAP_INTERNAL | MALLOC_CAP_8BIT);
+        auto mem = heap_caps_malloc(sizeof(SmartLeds::detail::RmtDriver), MALLOC_CAP_INTERNAL | MALLOC_CAP_8BIT);
         if (!mem) {
             SMARTLEDS_ALLOC_FAIL();
         }
-        _driver.reset(new (reinterpret_cast<detail::RmtDriver*>(mem)) detail::RmtDriver(type, count, pin, channel, _finishedFlag));
+        _driver.reset(new (reinterpret_cast<SmartLeds::detail::RmtDriver*>(mem)) SmartLeds::detail::RmtDriver(type, count, pin, channel, _finishedFlag));
 
         constexpr auto allocateRgb = [](size_t count, auto memoryCaps) {
             auto mem = reinterpret_cast<Rgb*>(heap_caps_malloc(sizeof(Rgb) * count, memoryCaps));
@@ -206,7 +206,7 @@ private:
     static SmartLed*& IRAM_ATTR ledForChannel(int channel);
 
     static bool anyAlive() {
-        for (int i = 0; i != detail::CHANNEL_COUNT; i++)
+        for (int i = 0; i != SmartLeds::detail::CHANNEL_COUNT; i++)
             if (ledForChannel(i) != nullptr)
                 return true;
         return false;
@@ -231,7 +231,7 @@ private:
     }
 
     SemaphoreHandle_t _finishedFlag;
-    std::unique_ptr<detail::RmtDriver, RmtDriverDeleter> _driver;
+    std::unique_ptr<SmartLeds::detail::RmtDriver, RmtDriverDeleter> _driver;
     int _channel;
     int _count;
     std::unique_ptr<Rgb[], RgbDeleter> _firstBuffer;

@@ -8,7 +8,7 @@
 #include <freertos/FreeRTOS.h>
 #include <freertos/semphr.h>
 
-namespace detail {
+namespace SmartLeds::detail {
 
 constexpr const int CHANNEL_COUNT = RMT_CHANNEL_MAX;
 
@@ -38,5 +38,5 @@ private:
     size_t _translatorSourceOffset;
 };
 
-};
+} // namespace SmartLeds::detail
 #endif // !SMARTLEDS_NEW_RMT_DRIVER

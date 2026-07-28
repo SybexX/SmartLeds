@@ -5,7 +5,7 @@
 
 #include "SmartLeds.h"
 
-namespace detail {
+namespace SmartLeds::detail {
 
 static constexpr const uint32_t RMT_RESOLUTION_HZ = 20 * 1000 * 1000; // 20 MHz
 static constexpr const uint32_t RMT_NS_PER_TICK = 1000000000LLU / RMT_RESOLUTION_HZ;
@@ -172,5 +172,5 @@ esp_err_t RmtDriver::transmit(const Rgb* buffer) {
     rmt_transmit_config_t cfg = {};
     return rmt_transmit(_channel, &_encoder.base, buffer, _count, &cfg);
 }
-};
+} // namespace SmartLeds::detail
 #endif // !SMARTLEDS_NEW_RMT_DRIVER
