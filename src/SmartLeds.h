@@ -111,7 +111,7 @@ public:
 
         xSemaphoreGive(_finishedFlag);
 
-        auto mem = heap_caps_malloc(sizeof(detail::RmtDriver), MALLOC_CAP_INTERNAL);
+        auto mem = heap_caps_malloc(sizeof(detail::RmtDriver), MALLOC_CAP_INTERNAL | MALLOC_CAP_8BIT);
         if (!mem) {
             SMARTLEDS_ALLOC_FAIL();
         }
@@ -125,11 +125,11 @@ public:
             return new (mem) Rgb[count];
         };
 
-        _firstBuffer.reset(allocateRgb(count, MALLOC_CAP_INTERNAL));
+        _firstBuffer.reset(allocateRgb(count, MALLOC_CAP_INTERNAL | MALLOC_CAP_8BIT));
         _firstBuffer.get_deleter().count = count;
 
         if (doubleBuffer) {
-            _secondBuffer.reset(allocateRgb(count, MALLOC_CAP_INTERNAL));
+            _secondBuffer.reset(allocateRgb(count, MALLOC_CAP_INTERNAL | MALLOC_CAP_8BIT));
             _secondBuffer.get_deleter().count = count;
         }
 
